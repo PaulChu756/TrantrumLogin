@@ -3,8 +3,8 @@ $trantrumDB = "trantrumDB";
 $host = "localhost";
 $username = "root";
 $password = "root";
-$gameKey = "Trantrum300!";
-$serverKey = "Trantrum300!";
+$secretGameKey = "Trantrum300!";
+$secretServerKey = "Trantrum300!";
 
 function connectDB()
 {
