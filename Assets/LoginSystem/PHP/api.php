@@ -1,28 +1,41 @@
 <?php
-$trantrumDB = "trantrumDB";
-$host = "localhost";
-$username = "root";
-$password = "root";
+include("connect.php");
+$connect = connectDB();
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 
-$gameKey = "trantrum300!";
-$serverKey = "TrantrumUSA!";
-
-//connection
-$connection = mysqli_connect($host, $username, $password);
-//check connection
-if(!$connection){
-die("Could not connect: " . mysqli_connect_error());
-}
-//select database
-$connection->select_db($trantrumDB);
-
-function connectDB()
+//get request
+if($requestMethod === "GET")
 {
-  global $trantrumDB;
-  global $host;
-  global $username;
-  global $password;
-
-
+    global $connection;
+    $resultSql = "SELECT * FROM Users";
+    $query = mysqli_query($connection, $resultSql) or die(mysqli_error($connection));
+    while($row = mysqli_fetch_array($query))
+    {
+        echo "Employee ID : " . $row['employeeID'] . " , Email : " . $row['email'];
+    }
 }
- ?>
+
+//post request
+elseif($requestMethod === "POST")
+{
+    global $connection;
+    $employeeID = safe($_POST["employeeID"]);
+    $email = safe($_POST["email"]);
+
+    if(!empty($employeeID) && !empty($email))
+    {
+        $userSql = "INSERT INTO Users(employeeID, email)
+        VALUES('$employeeID', '$email')";
+
+        if($connection->query($userSql) === TRUE)
+        {
+            echo $employeeID;
+            echo $email;
+        }
+    }
+
+    else
+    {
+        $userError = "Input boxes cannot be empty";
+    }
+}
