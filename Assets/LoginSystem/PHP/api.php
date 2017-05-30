@@ -22,20 +22,24 @@ elseif($requestMethod === "POST")
     $employeeID = safe($_POST["employeeID"]);
     $email = safe($_POST["email"]);
 
-    if(!empty($employeeID) && !empty($email))
+    if(empty($employeeID) || empty($email))
     {
-        $userSql = "INSERT INTO Users(employeeID, email)
-        VALUES('$employeeID', '$email')";
-
-        if($connection->query($userSql) === TRUE)
-        {
-            echo $employeeID;
-            echo $email;
-        }
+        throw new Exception("Please fill out all the inputs", 1);
     }
 
     else
     {
-        $userError = "Input boxes cannot be empty";
+        $userSql = "INSERT INTO Users(employeeID, email)
+        VALUES('$employeeID', '$email')";
+
+        //check if insert is good
+        if(mysqli_query($connection, $userSql))
+        {
+            echo "New user inserted : EmployeeID : "  . $employeeID . " and Email : " . $email;0
+        }
+        else
+        {
+            echo "error : " . $userSql . " : " . $connection->error;
+        }
     }
 }
