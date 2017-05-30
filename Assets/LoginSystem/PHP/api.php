@@ -4,7 +4,7 @@ $connect = connectDB();
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 //get request
-if($requestMethod === "GET")
+if($requestMethod == "GET")
 {
     global $connection;
     $resultSql = "SELECT * FROM Users";
@@ -16,7 +16,7 @@ if($requestMethod === "GET")
 }
 
 //post request
-elseif($requestMethod === "POST")
+elseif($requestMethod == "POST")
 {
     global $connection;
     $employeeID = safe($_POST["employeeID"]);
@@ -35,11 +35,15 @@ elseif($requestMethod === "POST")
         //check if insert is good
         if(mysqli_query($connection, $userSql))
         {
-            echo "New user inserted : EmployeeID : "  . $employeeID . " and Email : " . $email;0
+            echo "New user inserted : EmployeeID : "  . $employeeID . " and Email : " . $email;
         }
         else
         {
             echo "error : " . $userSql . " : " . $connection->error;
         }
     }
+}
+else
+{
+    echo "undefined request method";
 }

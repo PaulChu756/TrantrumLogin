@@ -20,6 +20,10 @@ function connectDB()
   {
     die("Could not connect: " . mysqli_connect_error());
   }
+  else
+  {
+    echo "Connect successfully";
+  }
 
   //select database
   $connection->select_db($trantrumDB) or die(mysql_error());
@@ -35,7 +39,6 @@ function safe($var)
 
 function fail($error)
 {
-  echo $error
-  exit;
+  echo $error;
 }
 ?>
