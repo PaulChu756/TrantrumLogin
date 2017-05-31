@@ -3,6 +3,13 @@ include("connect.php");
 $connect = connectDB();
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
+    $resultSql = "SELECT * FROM Users";
+    $query = mysqli_query($connect, $resultSql) or die(mysqli_error($connect));
+    while($row = mysqli_fetch_array($query))
+    {
+        echo " Employee ID : " . $row['employeeID'] . " , Email : " . $row['email'] . " <br> ";
+    }
+
 //get request
 if($requestMethod == "GET")
 {

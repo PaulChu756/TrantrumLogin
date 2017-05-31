@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\LoginSystem\LoginSystem.cs" />
+    <Compile Include="Assets\LoginSystem\dataLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LoginSystem\PHP\crossdomain.xml" />
