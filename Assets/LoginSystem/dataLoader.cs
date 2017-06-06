@@ -11,7 +11,7 @@ public class dataLoader : MonoBehaviour
         yield return data;
         string dataString = data.text;
         print (dataString);
-        users = dataString.Split(';');
+        users = dataString.Split('>');
 	}
 	
 }

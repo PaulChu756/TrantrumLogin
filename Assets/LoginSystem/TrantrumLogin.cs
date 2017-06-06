@@ -10,6 +10,14 @@ public class TrantrumLogin : MonoBehaviour
     public string registerURL = "http://YourWebsite.com/.../Register.php";
     public string checUsernameUrl = "http://YourWebsite.com/.../CheckUsername.php";
     public string checEmailUrl = "http://YourWebsite.com/.../CheckEmail.php";
+    public string forgotUrl = "http://YourWebsite.com/.../Forgot.php";
+    public string newPasswordURL = "http://YourWebsite.com/.../NewPassword.php";
+
+    public string secretGameKey = "12345";
+    public string secretServerKey = "54321";
+
+    private string resetEmail;
+    private string resetCode;
 
     void Start()
     {
