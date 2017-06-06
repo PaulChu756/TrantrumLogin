@@ -9,7 +9,7 @@ public class dataInsert : MonoBehaviour
     public int inputEmployeeID;
     public string inputEmail;
 
-    string registerURL = "http://34.208.221.68/pcPHP/register.php";
+    string registerURL = "http://34.208.221.68/php/register.php";
 
     void Start()
     {
@@ -18,7 +18,7 @@ public class dataInsert : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.L))
         {
             Register(inputEmployeeID, inputEmail);
             print("register user");

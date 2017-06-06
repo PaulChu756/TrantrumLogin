@@ -7,7 +7,7 @@ public class Login : MonoBehaviour
     public int inputEmployeeID;
     public string inputEmail;
 
-    string loginURL = "http://34.208.221.68/pcPHP/Login.php";
+    string loginURL = "http://34.208.221.68/php/Login.php";
 
 	// Update is called once per frame
 	void Update () {

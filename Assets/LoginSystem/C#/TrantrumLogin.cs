@@ -6,85 +6,72 @@ using System.Text.RegularExpressions;
 
 public class TrantrumLogin : MonoBehaviour
 {
-    public string loginUrl = "http://YourWebsite.com/.../Login.php";
+    public string loginUrl = "http://34.208.221.68/php/Login.php";
     public string registerURL = "http://YourWebsite.com/.../Register.php";
-    public string checUsernameUrl = "http://YourWebsite.com/.../CheckUsername.php";
-    public string checEmailUrl = "http://YourWebsite.com/.../CheckEmail.php";
-    public string forgotUrl = "http://YourWebsite.com/.../Forgot.php";
-    public string newPasswordURL = "http://YourWebsite.com/.../NewPassword.php";
-
-    public string secretGameKey = "12345";
-    public string secretServerKey = "54321";
-
-    private string resetEmail;
-    private string resetCode;
 
     void Start()
     {
         if (PlayerPrefs.GetInt("LoginRemember") == 1)
         {
             GameObject _go = GameObject.Find("Canvas").transform.FindChild("Login").gameObject;
-            _go.transform.FindChild("Username").gameObject.GetComponent<InputField>().text = PlayerPrefs.GetString("LoginUsername");
-            _go.transform.FindChild("Password").gameObject.GetComponent<InputField>().text = PlayerPrefs.GetString("LoginPassword");
+            _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>().text = PlayerPrefs.GetString("LoginEmployeeID");
+            _go.transform.FindChild("Email").gameObject.GetComponent<InputField>().text = PlayerPrefs.GetString("LoginEmail");
             _go.transform.FindChild("Remember Me").gameObject.GetComponent<Toggle>().isOn = true;
         }
     }
 
     public void Login(GameObject _go)
     {
-        string _username = _go.transform.FindChild("Username").gameObject.GetComponent<InputField>().text;
-        string _password = _go.transform.FindChild("Password").gameObject.GetComponent<InputField>().text;
-        string _key = Md5Sum(_username + secretGameKey).ToLower();
+        string _employeeID = _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>().text;
+        string _email = _go.transform.FindChild("Email").gameObject.GetComponent<InputField>().text;
 
-        _go.transform.FindChild("Username").gameObject.GetComponent<InputField>().enabled = false;
-        _go.transform.FindChild("Password").gameObject.GetComponent<InputField>().enabled = false;
+        _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>().enabled = false;
+        _go.transform.FindChild("Email").gameObject.GetComponent<InputField>().enabled = false;
         _go.transform.FindChild("Remember Me").gameObject.GetComponent<Toggle>().enabled = false;
         _go.transform.FindChild("Login").gameObject.GetComponent<Button>().enabled = false;
         _go.transform.FindChild("Register").gameObject.GetComponent<Button>().enabled = false;
-        _go.transform.FindChild("Forgot").gameObject.GetComponent<Button>().enabled = false;
 
         _go.transform.FindChild("Msg").GetComponent<Text>().text = "...";
-        StartCoroutine(LoginIE(_username, _password, _key, _go));
+        StartCoroutine(LoginIE(_employeeID, _email, _go));
     }
-    IEnumerator LoginIE(string _username, string _password, string _key, GameObject _go)
+    IEnumerator LoginIE(string _employeeID, string _email, GameObject _go)
     {
         WWWForm form = new WWWForm();
-        form.AddField("name", _username);
-        form.AddField("pass", Md5Sum(_password));
-        form.AddField("key", _key);
+        form.AddField("employeeIDPost", _employeeID);
+        form.AddField("emailPost", _email);
 
         WWW www = new WWW(loginUrl, form);
         yield return www;
         string _return = www.text;
-        string _returnKey = Md5Sum(_username + secretServerKey).ToLower();
+        print(_return);
 
         if (_return == "")
         {
             _go.transform.FindChild("Msg").GetComponent<Text>().text = "Server offline";
         }
-        else if (_return == _returnKey)
+        else if (_return == "true")
         {
             _go.transform.FindChild("Msg").GetComponent<Text>().text = "Welcome";
             if (_go.transform.FindChild("Remember Me").gameObject.GetComponent<Toggle>().isOn)
             {
                 PlayerPrefs.SetInt("LoginRemember", 1);
-                PlayerPrefs.SetString("LoginUsername", _username);
-                PlayerPrefs.SetString("LoginPassword", _password);
+                PlayerPrefs.SetString("LoginEmployeeID", _employeeID);
+                PlayerPrefs.SetString("LoginEmail", _email);
             }
             else
             {
                 PlayerPrefs.SetInt("LoginRemember", 0);
             }
 
-            GameObject _goUsername = new GameObject("Username: " + _username);
-            DontDestroyOnLoad(_goUsername);
+            GameObject _goEmployeeID = new GameObject("EmployeeID: " + _employeeID);
+            DontDestroyOnLoad(_goEmployeeID);
             Application.LoadLevel("Game");
         }
         else
         {
-            _go.transform.FindChild("Msg").GetComponent<Text>().text = "Incorrect password or username";
-            _go.transform.FindChild("Username").gameObject.GetComponent<InputField>().enabled = true;
-            _go.transform.FindChild("Password").gameObject.GetComponent<InputField>().enabled = true;
+            _go.transform.FindChild("Msg").GetComponent<Text>().text = "Incorrect employeeID or email";
+            _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>().enabled = true;
+            _go.transform.FindChild("Email").gameObject.GetComponent<InputField>().enabled = true;
             _go.transform.FindChild("Remember Me").gameObject.GetComponent<Toggle>().enabled = true;
             _go.transform.FindChild("Login").gameObject.GetComponent<Button>().enabled = true;
             _go.transform.FindChild("Register").gameObject.GetComponent<Button>().enabled = true;
@@ -94,26 +81,20 @@ public class TrantrumLogin : MonoBehaviour
 
     public void ResetRegister(GameObject _go)
     {
-        InputField _username = _go.transform.FindChild("Username").gameObject.GetComponent<InputField>();
-        InputField _password = _go.transform.FindChild("Password").gameObject.GetComponent<InputField>();
-        InputField _passwordComfirm = _go.transform.FindChild("Password Comfirm").gameObject.GetComponent<InputField>();
+        InputField _employeeID = _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>();
         InputField _email = _go.transform.FindChild("Email").gameObject.GetComponent<InputField>();
         InputField _emailComfirm = _go.transform.FindChild("Email Comfirm").gameObject.GetComponent<InputField>();
         Toggle _termsToggle = _go.transform.FindChild("Toggle").gameObject.GetComponent<Toggle>();
         Button _terms = _go.transform.FindChild("Terms").gameObject.GetComponent<Button>();
         Text _msg = _go.transform.FindChild("Msg").gameObject.GetComponent<Text>();
 
-        _username.text = "";
-        _password.text = "";
-        _passwordComfirm.text = "";
+        _employeeID.text = "";
         _email.text = "";
         _emailComfirm.text = "";
         _termsToggle.isOn = false;
         _msg.text = "";
 
-        _username.enabled = true;
-        _password.enabled = true;
-        _passwordComfirm.enabled = true;
+        _employeeID.enabled = true;
         _email.enabled = true;
         _emailComfirm.enabled = true;
         _termsToggle.enabled = true;
@@ -126,9 +107,7 @@ public class TrantrumLogin : MonoBehaviour
     }
     IEnumerator RegisterIE(GameObject _go)
     {
-        InputField _username = _go.transform.FindChild("Username").gameObject.GetComponent<InputField>();
-        InputField _password = _go.transform.FindChild("Password").gameObject.GetComponent<InputField>();
-        InputField _passwordComfirm = _go.transform.FindChild("Password Comfirm").gameObject.GetComponent<InputField>();
+        InputField _employeeID = _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>();
         InputField _email = _go.transform.FindChild("Email").gameObject.GetComponent<InputField>();
         InputField _emailComfirm = _go.transform.FindChild("Email Comfirm").gameObject.GetComponent<InputField>();
         Toggle _termsToggle = _go.transform.FindChild("Toggle").gameObject.GetComponent<Toggle>();
@@ -138,9 +117,7 @@ public class TrantrumLogin : MonoBehaviour
         _go.transform.FindChild("Back").gameObject.GetComponent<Button>().enabled = false;
         _go.transform.FindChild("Submit").gameObject.GetComponent<Button>().enabled = false;
 
-        _username.enabled = false;
-        _password.enabled = false;
-        _passwordComfirm.enabled = false;
+        _employeeID.enabled = false;
         _email.enabled = false;
         _emailComfirm.enabled = false;
         _termsToggle.enabled = false;
@@ -148,109 +125,34 @@ public class TrantrumLogin : MonoBehaviour
         _msg.text = "";
 
         bool _error = false;
-        if (_username.text == "")
+        if (_employeeID.text == "")
         {
-            _username.image.color = Color.red;
-            _msg.text = "Enter username";
+            _employeeID.image.color = Color.red;
+            _msg.text = "Enter employeeID";
             _error = true;
-        }
-        else
-        {
-            WWWForm form = new WWWForm();
-            form.AddField("name", _username.text);
-
-            WWW www = new WWW(checUsernameUrl, form);
-            yield return www;
-            string _return = www.text;
-
-            if (_return == "")
-            {
-                _username.image.color = Color.white;
-                _msg.text = "Server offline";
-                _error = true;
-            }
-            else if (_return == "false")
-            {
-                _username.image.color = Color.red;
-                _msg.text = "Username already in use";
-                _error = true;
-            }
-            else
-            {
-                _username.image.color = Color.white;
-            }
-        }
-
-        if (!_error)
-        {
-            if (_password.text == "")
-            {
-                _password.image.color = Color.red;
-                _msg.text = "Enter password";
-                _error = true;
-            }
-            else
-            {
-                _password.image.color = Color.white;
-
-                if (_passwordComfirm.text != _password.text)
-                {
-                    _passwordComfirm.image.color = Color.red;
-                    _msg.text = "Passwords does not match";
-                    _error = true;
-                }
-                else
-                {
-                    _passwordComfirm.image.color = Color.white;
-                }
-            }
         }
 
         if (!_error)
         {
             if (_email.text == "")
             {
-                _msg.text = "Enter email";
+                _email.image.color = Color.red;
+                _msg.text = "Enter password";
                 _error = true;
             }
             else
             {
-                if (!VerifyEmailAddress(_email.text))
+                _email.image.color = Color.white;
+
+                if (_email.text != _email.text)
                 {
-                    _email.image.color = Color.red;
-                    _msg.text = "Email not valid";
+                    _emailComfirm.image.color = Color.red;
+                    _msg.text = "Passwords does not match";
                     _error = true;
                 }
                 else
                 {
-                    _email.image.color = Color.white;
-
-                    if (_emailComfirm.text != _email.text)
-                    {
-                        _emailComfirm.image.color = Color.red;
-                        _msg.text = "Emails does not match";
-                        _error = true;
-                    }
-                    else
-                    {
-                        WWWForm form = new WWWForm();
-                        form.AddField("email", _email.text);
-
-                        WWW www = new WWW(checEmailUrl, form);
-                        yield return www;
-                        string _return = www.text;
-
-                        if (_return == "false")
-                        {
-                            _email.image.color = Color.red;
-                            _msg.text = "Email already in use";
-                            _error = true;
-                        }
-                        else
-                        {
-                            _email.image.color = Color.white;
-                        }
-                    }
+                    _emailComfirm.image.color = Color.white;
                 }
             }
         }
@@ -271,17 +173,14 @@ public class TrantrumLogin : MonoBehaviour
         if (!_error)
         {
             WWWForm form = new WWWForm();
-            form.AddField("name", _username.text);
-            form.AddField("pass", Md5Sum(_password.text));
+            form.AddField("employeeID", _employeeID.text);
             form.AddField("email", _email.text);
-            form.AddField("key", Md5Sum(_username.text + secretGameKey).ToLower());
 
             WWW www = new WWW(registerURL, form);
             yield return www;
             string _return = www.text;
-            string _returnKey = Md5Sum(_username.text + secretServerKey).ToLower();
 
-            if (_returnKey == _return)
+            if (_return == "true")
             {
                 _msg.text = "Registration is complete";
                 yield return new WaitForSeconds(1);
@@ -296,9 +195,7 @@ public class TrantrumLogin : MonoBehaviour
 
         if (_error)
         {
-            _username.enabled = true;
-            _password.enabled = true;
-            _passwordComfirm.enabled = true;
+            _employeeID.enabled = true;
             _email.enabled = true;
             _emailComfirm.enabled = true;
             _termsToggle.enabled = true;
@@ -308,6 +205,7 @@ public class TrantrumLogin : MonoBehaviour
         }
     }
 
+    /*
     public void Forgot(GameObject _go)
     {
         StartCoroutine(ForgotIE(_go));
@@ -483,4 +381,5 @@ public class TrantrumLogin : MonoBehaviour
         }
         return sb.ToString();
     }
+    */
 }
