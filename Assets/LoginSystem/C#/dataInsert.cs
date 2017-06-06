@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 
 public class dataInsert : MonoBehaviour
 {
-    public int employeeID;
-    public string email;
+    public int inputEmployeeID;
+    public string inputEmail;
 
     string registerURL = "http://34.208.221.68/pcPHP/register.php";
 
@@ -20,7 +20,7 @@ public class dataInsert : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Register(employeeID, email);
+            Register(inputEmployeeID, inputEmail);
             print("register user");
         }
     }

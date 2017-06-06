@@ -78,10 +78,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\LoginSystem\LoginSystem.cs" />
-    <Compile Include="Assets\LoginSystem\TrantrumLogin.cs" />
-    <Compile Include="Assets\LoginSystem\dataInsert.cs" />
-    <Compile Include="Assets\LoginSystem\dataLoader.cs" />
+    <Compile Include="Assets\LoginSystem\C#\LoginSystem.cs" />
+    <Compile Include="Assets\LoginSystem\C#\TrantrumLogin.cs" />
+    <Compile Include="Assets\LoginSystem\C#\dataInsert.cs" />
+    <Compile Include="Assets\LoginSystem\C#\dataLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LoginSystem\PHP\crossdomain.xml" />
