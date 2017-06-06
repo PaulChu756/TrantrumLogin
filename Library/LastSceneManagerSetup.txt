@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/LoginSystem/Old/dataLoader.unity
+- path: Assets/LoginSystem/PcLogin.unity
   isLoaded: 1
   isActive: 1

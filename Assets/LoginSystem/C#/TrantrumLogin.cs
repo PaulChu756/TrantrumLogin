@@ -1,13 +1,15 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
 using System.Text;
 using System.Text.RegularExpressions;
 
+
 public class TrantrumLogin : MonoBehaviour
 {
-    public string loginUrl = "http://34.208.221.68/php/Login.php";
-    public string registerURL = "http://YourWebsite.com/.../Register.php";
+    public string loginUrl = "http://34.208.221.68/php/login.php";
+    public string registerURL = "http://34.208.221.68/php/register.php";
 
     void Start()
     {
@@ -49,7 +51,7 @@ public class TrantrumLogin : MonoBehaviour
         {
             _go.transform.FindChild("Msg").GetComponent<Text>().text = "Server offline";
         }
-        else if (_return == "true")
+        else if (_return == _email)
         {
             _go.transform.FindChild("Msg").GetComponent<Text>().text = "Welcome";
             if (_go.transform.FindChild("Remember Me").gameObject.GetComponent<Toggle>().isOn)
@@ -66,6 +68,7 @@ public class TrantrumLogin : MonoBehaviour
             GameObject _goEmployeeID = new GameObject("EmployeeID: " + _employeeID);
             DontDestroyOnLoad(_goEmployeeID);
             Application.LoadLevel("Game");
+            //SceneManagement.LoadScene("Game", LoadSceneMode.Single);
         }
         else
         {
@@ -79,6 +82,7 @@ public class TrantrumLogin : MonoBehaviour
         }
     }
 
+/*
     public void ResetRegister(GameObject _go)
     {
         InputField _employeeID = _go.transform.FindChild("EmployeeID").gameObject.GetComponent<InputField>();
@@ -204,6 +208,7 @@ public class TrantrumLogin : MonoBehaviour
             _go.transform.FindChild("Submit").gameObject.GetComponent<Button>().enabled = true;
         }
     }
+*/
 
     /*
     public void Forgot(GameObject _go)
