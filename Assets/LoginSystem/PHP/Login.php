@@ -1,38 +1,34 @@
 <?php
-  	include("DBTools.php");
-	$link=dbConnect();
+include("connect.php");
+$connect = connectDB();
 
-	$name = safe($_POST['name']);
-	$pass = safe($_POST['pass']);
-	$key = safe($_POST['key']);
+$employeeIDEnter = $_POST["employeeIDPost"];
+$emailEnter = $_POST["emailPost"];
 
-	$query = "SELECT * FROM `LoginSystem` WHERE name = '". $name ."'";
-    $result = mysql_query($query) or die('Query failed: ' . mysql_error());	
-    $num_results = mysql_num_rows($result);  
-	
-    if($num_results > 0)
+$sql = "SELECT * FROM Users WHERE employeeID = '".$employeeIDEnter."' ";
+$result = mysqli_query($connect ,$sql);
+
+if(mysqli_num_rows($result) > 0)
+{
+    while($row = mysqli_fetch_assoc($result))
     {
-		$row = mysql_fetch_assoc($result);
-		$realKey = md5($name . $secretGameKey);
-	
-		if($realKey == $key)
-		{
-			if(strtolower($row['pass']) == strtolower($pass))
-			{
-				echo md5($name . $secretServerKey);
-			}
-			else
-			{
-				echo 'false';
-			}
-		}
-		else
-		{
-			echo 'false';
-		}
+        if($row['employeeID'] == $employeeIDEnter)
+        {
+            echo "Login Success";
+            echo $row['employeeID'];
+            echo $row['email'];
+        }
+        else
+        {
+            echo " incorrect login information ";
+            echo " login is = " . $row['employeeID'] . " . " . $row['email'];
+        }
     }
-	else
-	{
-		echo 'false';
-	}
+}
+else
+{
+    echo "User not found";
+    echo " login is = " . $row['employeeID'] . " . " . $row['email'];
+}
+
 ?>

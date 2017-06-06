@@ -1,8 +1,8 @@
 ﻿<Properties StartupItem="TrantrumLogin.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\LoginSystem\PcConnection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\LoginSystem\C#\dataInsert.cs">
     <Files>
-      <File FileName="Assets\LoginSystem\PcConnection.cs" Line="7" Column="1" />
+      <File FileName="Assets\LoginSystem\C#\dataInsert.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

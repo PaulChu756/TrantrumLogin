@@ -7,11 +7,11 @@ public class dataLoader : MonoBehaviour
     public string[] users;
 	IEnumerator Start ()
     {
-        WWW data = new WWW("http://34.208.221.68/pcPHP/api.php");
+        WWW data = new WWW("http://34.208.221.68/pcPHP/getData.php");
         yield return data;
         string dataString = data.text;
         print (dataString);
         users = dataString.Split('>');
 	}
-	
+
 }
