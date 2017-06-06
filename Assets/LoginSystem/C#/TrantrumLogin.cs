@@ -51,7 +51,7 @@ public class TrantrumLogin : MonoBehaviour
         {
             _go.transform.FindChild("Msg").GetComponent<Text>().text = "Server offline";
         }
-        else if (_return == _email)
+        else if (_return == _email && _return == _employeeID)
         {
             _go.transform.FindChild("Msg").GetComponent<Text>().text = "Welcome";
             if (_go.transform.FindChild("Remember Me").gameObject.GetComponent<Toggle>().isOn)
