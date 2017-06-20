@@ -15,8 +15,7 @@ if(mysqli_num_rows($result) > 0)
         if($row['employeeID'] == $employeeIDEnter)
         {
             echo "Login Success";
-            echo $row['employeeID'];
-            echo $row['email'];
+            echo " login is = " . $row['employeeID'] . " . " . $row['email'];
         }
         else
         {
